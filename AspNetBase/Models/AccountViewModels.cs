@@ -1,59 +1,59 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using FluentValidation;
 
 namespace AspNetBase.Models
 {
     public class ExternalLoginConfirmationViewModel
     {
-        [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
+    }
+
+    public class ExternalLoginConfirmationViewModelValidator : AbstractValidator<ExternalLoginConfirmationViewModel>
+    {
+        public ExternalLoginConfirmationViewModelValidator()
+        {
+            RuleFor(c => c.Email).EmailAddress().NotEmpty();
+        }
     }
 
     public class ExternalLoginListViewModel
     {
+        public string Action { get; set; }
         public string ReturnUrl { get; set; }
     }
 
-    public class SendCodeViewModel
+    public class ManageUserViewModel
     {
-        public string SelectedProvider { get; set; }
-        public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
-        public string ReturnUrl { get; set; }
-        public bool RememberMe { get; set; }
+        [DataType(DataType.Password)]
+        [Display(Name = "Current password")]
+        public string OldPassword { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "New password")]
+        public string NewPassword { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm new password")]
+        public string ConfirmPassword { get; set; }
     }
 
-    public class VerifyCodeViewModel
+    public class ManageUserViewModelValidator : AbstractValidator<ManageUserViewModel>
     {
-        [Required]
-        public string Provider { get; set; }
-
-        [Required]
-        [Display(Name = "Code")]
-        public string Code { get; set; }
-        public string ReturnUrl { get; set; }
-
-        [Display(Name = "Remember this browser?")]
-        public bool RememberBrowser { get; set; }
-
-        public bool RememberMe { get; set; }
-    }
-
-    public class ForgotViewModel
-    {
-        [Required]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
+        public ManageUserViewModelValidator()
+        {
+            RuleFor(c => c.OldPassword).NotEmpty();
+            RuleFor(c => c.NewPassword).Length(6, 100).NotEmpty();
+            RuleFor(c => c.ConfirmPassword).Equal(c => c.NewPassword).WithMessage("The new password and confirmation password do not match.");
+        }
     }
 
     public class LoginViewModel
     {
-        [Required]
         [Display(Name = "Email")]
-        [EmailAddress]
         public string Email { get; set; }
 
-        [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
@@ -61,52 +61,90 @@ namespace AspNetBase.Models
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
     }
+    public class LoginViewModelValidator : AbstractValidator<LoginViewModel>
+    {
+        public LoginViewModelValidator()
+        {
+            RuleFor(c => c.Email).EmailAddress().NotEmpty();
+            RuleFor(c => c.Password).NotEmpty();
+        }
+    }
 
     public class RegisterViewModel
     {
-        [Required]
-        [EmailAddress]
+        [Display(Name = "Name")]
+        public string Name { get; set; }
+
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+    }
+
+    public class RegisterViewModelValidator : AbstractValidator<RegisterViewModel>
+    {
+        public RegisterViewModelValidator()
+        {
+            RuleFor(c => c.Name).NotEmpty();
+            RuleFor(c => c.Email).EmailAddress().NotEmpty();
+            RuleFor(c => c.Password).Length(6, 100).NotEmpty();
+            RuleFor(c => c.ConfirmPassword).Equal(c => c.Password).WithMessage("The password and confirmation password do not match.");
+        }
     }
 
     public class ResetPasswordViewModel
     {
-        [Required]
-        [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
     }
+    public class ResetPasswordViewModelValidator : AbstractValidator<ResetPasswordViewModel>
+    {
+        public ResetPasswordViewModelValidator()
+        {
+            RuleFor(c => c.Email).EmailAddress().NotEmpty();
+            RuleFor(c => c.Password).Length(6, 100).NotEmpty();
+            RuleFor(c => c.ConfirmPassword).Equal(c => c.Password).WithMessage("The password and confirmation password do not match.");
+        }
+    }
 
     public class ForgotPasswordViewModel
     {
-        [Required]
-        [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+    }
+    public class ForgotPasswordViewModelValidator : AbstractValidator<ForgotPasswordViewModel>
+    {
+        public ForgotPasswordViewModelValidator()
+        {
+            RuleFor(c => c.Email).EmailAddress().NotEmpty();
+        }
+    }
+
+    public class EditProfileViewModel
+    {
+        
+    }
+
+    public class ChangeEmailViewModel
+    {
+        public string NewEmail { get; set; }
+
+        public string Password { get; set; }
     }
 }
