@@ -7,7 +7,7 @@ namespace AspNetBase.Helpers
 {
     public static class MiscHelpers
     {
-        private static readonly Random _random = new Random();
+        private static readonly Random random = new Random();
 
         public static T? AsNullIfDefault<T>(this T value) where T : struct
         {
@@ -21,7 +21,7 @@ namespace AspNetBase.Helpers
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             var result = new string(
                 Enumerable.Repeat(chars, length)
-                          .Select(s => s[_random.Next(s.Length)])
+                          .Select(s => s[random.Next(s.Length)])
                           .ToArray());
 
             return result;
