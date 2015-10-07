@@ -1,7 +1,9 @@
-﻿using Microsoft.Owin;
+﻿using AspNetBase;
+using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(AspNetBase.Startup))]
+[assembly: OwinStartup(typeof (Startup))]
+
 namespace AspNetBase
 {
     public partial class Startup

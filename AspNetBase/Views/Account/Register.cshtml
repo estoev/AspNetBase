@@ -5,37 +5,55 @@
 
 <h2>@ViewBag.Title.</h2>
 
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@if (ViewBag.ConfirmEmail == true)
 {
-    @Html.AntiForgeryToken()
-    <h4>Create a new account.</h4>
-    <hr />
-    @Html.ValidationSummary("", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
-        </div>
+    <h4>Check your email to confirm your subscription!</h4>
+    <div>
+        <p>Thanks for signing up for CoNomads!</p>
+        <p>You need to do one more thing before you can log in.</p>
+        <ul>
+            <li>Check your email for a message from CoNomads</li>
+            <li>Click the link in that email.</li>
+            <li>If you don't see the email in about 10 minutes, check your spam filter.</li>
+        </ul>
     </div>
 }
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+else
+{
+    using (Html.BeginForm("Register", "Account", FormMethod.Post, new {@class = "form-horizontal", role = "form"}))
+    {
+        @Html.AntiForgeryToken()
+        <h4>Create a new account.</h4>
+        <hr/>
+        @Html.ValidationSummary("", new {@class = "text-danger"})
+        <div class="form-group">
+            @Html.LabelFor(m => m.Name, new {@class = "col-md-2 control-label"})
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Name, new {@class = "form-control"})
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Email, new {@class = "col-md-2 control-label"})
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Email, new {@class = "form-control"})
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password, new {@class = "col-md-2 control-label"})
+            <div class="col-md-10">
+                @Html.PasswordFor(m => m.Password, new {@class = "form-control"})
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.ConfirmPassword, new {@class = "col-md-2 control-label"})
+            <div class="col-md-10">
+                @Html.PasswordFor(m => m.ConfirmPassword, new {@class = "form-control"})
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-default" value="Register"/>
+            </div>
+        </div>
+    }
 }
