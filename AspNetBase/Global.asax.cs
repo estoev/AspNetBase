@@ -22,7 +22,6 @@ namespace AspNetBase
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
             ModelBinders.Binders.DefaultBinder = new CustomModelBinder();
             IoC.Init();
             ValidatorConfig.Init();

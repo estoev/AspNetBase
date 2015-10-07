@@ -124,30 +124,29 @@ namespace AspNetBase.Controllers
                     if (!Properties.Settings.Default.RequireEmailConfirmation)
                     {
                         await SignInAsync(user, false);
+                        return RedirectToAction("Index");
                     }
-                    else
-                    {
-                        // Send an email with this link
-                        userManager.UserTokenProvider =
-                            new DataProtectorTokenProvider<User>(
-                                Startup.DataProtectionProvider.Create("EmailConfirmation"));
 
-                        string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                        var callbackUrl = Url.Action("ConfirmEmail", "Account", new {userId = user.Id, code = code},
-                            protocol: Request.Url.Scheme);
+                    // Send an email with this link
+                    userManager.UserTokenProvider =
+                        new DataProtectorTokenProvider<User>(
+                            Startup.DataProtectionProvider.Create("EmailConfirmation"));
 
-                        dynamic email = new Email("ConfirmEmail");
-                        email.UserName = user.Name;
-                        email.ConfirmUrl = callbackUrl;
+                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new {userId = user.Id, code = code},
+                        protocol: Request.Url.Scheme);
 
-                        MailMessage message = new Postal.EmailService().CreateMailMessage(email);
+                    dynamic email = new Email("ConfirmEmail");
+                    email.UserName = user.Name;
+                    email.ConfirmUrl = callbackUrl;
 
-                        emailService.SendEmail(new MailAddress(user.Email, user.Name), message.Subject, message.Body,
-                            false);
+                    MailMessage message = new Postal.EmailService().CreateMailMessage(email);
 
-                        ViewBag.ConfirmEmail = true;
-                        return View(model);
-                    }
+                    emailService.SendEmail(new MailAddress(user.Email, user.Name), message.Subject, message.Body,
+                        false);
+
+                    ViewBag.ConfirmEmail = true;
+                    return View(model);
                 }
                 AddErrors(result);
             }

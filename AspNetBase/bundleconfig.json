@@ -1,0 +1,17 @@
+[
+  {
+    "outputFileName": "css/styles.css",
+    "inputFiles": [
+      "css/bootstrap.css",
+      "css/bootstrap-theme.css",
+      "css/custom.css"
+    ]
+  },
+  {
+    "outputFileName": "js/scripts.js",
+    "inputFiles": [
+      "js/jquery.js",
+      "js/bootstrap.js"
+    ]
+  }
+]
